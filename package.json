@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/melonmanchan/www-applications-project/issues"
   },
-  "homepage": "https://github.com/melonmanchan/www-applications-project#readme"
+  "homepage": "https://github.com/melonmanchan/www-applications-project#readme",
+  "dependencies": {
+    "koa": "^2.3.0",
+    "koad": "0.0.1"
+  }
 }
