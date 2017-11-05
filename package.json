@@ -18,6 +18,9 @@
   "homepage": "https://github.com/melonmanchan/www-applications-project#readme",
   "dependencies": {
     "koa": "^2.3.0",
-    "koad": "0.0.1"
+    "koa-bodyparser": "^4.2.0",
+    "koa-route": "^3.2.0",
+    "koad": "0.0.1",
+    "mongodb": "^2.2.33"
   }
 }
