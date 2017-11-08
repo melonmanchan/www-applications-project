@@ -39,6 +39,19 @@ async function setUpApp() {
     }
   }))
 
+  app.use(route.get('/fibonacci', async (ctx) => {
+    try {
+      const data = await collection.find().toArray()
+      console.log(data)
+      ctx.response.statusCode = 200
+      ctx.response.body = data
+    } catch (e) {
+      console.error(e)
+      ctx.response.statusCode = 500
+      ctx.response.body = e
+    }
+  }))
+
   console.log('app listening on port 3000')
 
   app.listen(3000)
