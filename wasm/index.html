@@ -17,10 +17,7 @@
   Module.onRuntimeInitialized = function () {
     var fibonacci = Module.cwrap('fibonacci', 'number', ['number']);
     var fibonacci_for = Module.cwrap('fibonacci_for', 'number', ['number']);
-    var results = window.runAndMeasure(fibonacci, fibonacci_for);
-    console.log(results);
-    document.querySelector('.recursive').innerHTML = results.recursive;
-    document.querySelector('.for').innerHTML = results.forLoop;
+    window.runAndMeasure(fibonacci, fibonacci_for, 'WASM');
   }
 </script>
 <script src="../common/common.js"></script>

@@ -12,10 +12,7 @@
 
 <script>
   window.onload = function () {
-    var results = window.runAndMeasure(fibonacci, fibonacci_for);
-    console.log(results);
-    document.querySelector('.recursive').innerHTML = results.recursive;
-    document.querySelector('.for').innerHTML = results.forLoop;
+    window.runAndMeasure(fibonacci, fibonacci_for, 'JS');
   }
 </script>
 <script src="../common/common.js"></script>

@@ -1,9 +1,11 @@
 
-function runAndMeasure(recursiveFibonacci, forLoopFibonacci) {
+function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
     var amount = parseInt(window.location.search.split('?n=')[1]);
     var results = {
         recursive: 0,
-        forLoop: 0
+        forLoop: 0,
+        amount: amount,
+        type: type
     }
 
     console.log(amount);
@@ -30,5 +32,25 @@ function runAndMeasure(recursiveFibonacci, forLoopFibonacci) {
     console.log('For loop fibonacci ended...');
     results.forLoop = fEnd - fStart;
 
-    return results;
+    console.log(JSON.stringify(results));
+
+    // post results to server
+    var url = 'http://159.89.0.207:3000/fibonacci';
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                data = JSON.parse(request.responseText);
+                console.log('POST success, result:', data);
+            } else {
+                console.error('Error in POST! The status is ' + request.status + ' - ' + request.responseText)
+            }
+        }
+    }
+    request.open("POST", url, true);
+    request.setRequestHeader("Content-type", "application/json");
+    request.send(JSON.stringify(results));
+
+    document.querySelector('.recursive').innerHTML = results.recursive;
+    document.querySelector('.for').innerHTML = results.forLoop;
 }
