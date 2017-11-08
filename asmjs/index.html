@@ -2,7 +2,24 @@
 Module = {};
 Module.noInitialRun = true;
 Module.onRuntimeInitialized = function () {
-  alert(1)
+  var fibonacci = Module.cwrap('fibonacci', 'number', ['number']);
+  var fibonacciFor = Module.cwrap('fibonacci_for', 'number', ['number']);
+
+  console.log('Recursive fibonacci starting...');
+  console.time();
+  for (i = 0; i < 20; i++) {
+    fibonacci(i);
+  }
+  console.timeEnd();
+  console.log('Recursive fibonacci ended...');
+
+  console.log('For loop fibonacci starting...');
+  console.time();
+  for (i = 0; i < 20; i++) {
+    fibonacciFor(i);
+  }
+  console.timeEnd();
+  console.log('For loop fibonacci ended...');
 }
 </script>
 <script src="./output.asm.js"></script>

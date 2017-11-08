@@ -61,3 +61,5 @@ build
 *.asm.js*
 *.wasm.js*
 *.wasm.wasm*
+
+\.vscode/
