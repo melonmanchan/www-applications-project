@@ -2,7 +2,7 @@ function fibonacci(n) {
   if (n <= 1) {
     return n
   } else {
-    return fibo(n-1) + fibo(n-2)
+    return fibonacci(n-1) + fibonacci(n-2)
   }
 }
 
