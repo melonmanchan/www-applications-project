@@ -1,20 +1,22 @@
+<div>
+  <h1>Fibonacci results</h1>
+  <div class="results">
+    <div>
+      Recursive: <span class="recursive">-</span> ms
+    </div>
+    <div>
+      For loop: <span class="for">-</span> ms
+    </div>
+  </div>
+</div>
+
 <script>
   window.onload = function () {
-    console.log('Recursive fibonacci starting...');
-    console.time();
-    for (i = 0; i < 20; i++) {
-      fibonacci(i);
-    }
-    console.timeEnd();
-    console.log('Recursive fibonacci ended...');
-
-    console.log('For loop fibonacci starting...');
-    console.time();
-    for (i = 0; i < 20; i++) {
-      fibonacci_for(i);
-    }
-    console.timeEnd();
-    console.log('For loop fibonacci ended...');
+    var results = window.runAndMeasure(fibonacci, fibonacci_for);
+    console.log(results);
+    document.querySelector('.recursive').innerHTML = results.recursive;
+    document.querySelector('.for').innerHTML = results.forLoop;
   }
 </script>
+<script src="../common/common.js"></script>
 <script src="./script.js"></script>
