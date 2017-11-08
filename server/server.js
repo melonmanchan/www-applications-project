@@ -15,12 +15,17 @@ async function setUpApp() {
   const db = await client.connect(url)
   const collection = db.collection('results')
 
-  app.use(route.post('/api', async (ctx) => {
+  app.use(route.post('/fibonacci', async (ctx) => {
     const agent = ctx.request.header['user-agent'] || ctx.request.header['x-user-agent']
     const userAgent = ua.parse(agent)
-    await collection.insertOne(userAgent)
+    const data = {
+      browser: userAgent,
+      data: ctx.request.body || {}
+    }
 
+    await collection.insertOne(data)
     ctx.response.statusCode = 200
+    ctx.response.body = data
   }))
 
   console.log('app listening on port 3000')
