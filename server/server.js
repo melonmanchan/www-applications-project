@@ -13,11 +13,13 @@ const url = 'mongodb://localhost:27017/www';
 
 async function setUpApp() {
   const db = await client.connect(url)
+  const collection = db.collection('results')
 
   app.use(route.post('/api', async (ctx) => {
     const agent = ctx.request.header['user-agent'] || ctx.request.header['x-user-agent']
     const userAgent = ua.parse(agent)
-    ctx.body = userAgent
+    await collection.insertOne(userAgent)
+
     ctx.response.statusCode = 200
   }))
 
