@@ -42,6 +42,7 @@ async function setUpApp() {
         device: userAgent.device,
         os: userAgent.os,
         raw: agent,
+        created_at: new Date(),
         data: ctx.request.body || {}
       }
 
