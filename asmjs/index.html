@@ -3,7 +3,7 @@ Module = {};
 Module.noInitialRun = true;
 Module.onRuntimeInitialized = function () {
   var fibonacci = Module.cwrap('fibonacci', 'number', ['number']);
-  var fibonacciFor = Module.cwrap('fibonacci_for', 'number', ['number']);
+  var fibonacci_for = Module.cwrap('fibonacci_for', 'number', ['number']);
 
   console.log('Recursive fibonacci starting...');
   console.time();
@@ -16,7 +16,7 @@ Module.onRuntimeInitialized = function () {
   console.log('For loop fibonacci starting...');
   console.time();
   for (i = 0; i < 20; i++) {
-    fibonacciFor(i);
+    fibonacci_for(i);
   }
   console.timeEnd();
   console.log('For loop fibonacci ended...');

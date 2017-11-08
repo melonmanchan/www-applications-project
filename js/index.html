@@ -1,7 +1,20 @@
 <script>
   window.onload = function () {
-    console.log(fibonacci(5))
-    console.log(fibonacci_for(5))
+    console.log('Recursive fibonacci starting...');
+    console.time();
+    for (i = 0; i < 20; i++) {
+      fibonacci(i);
+    }
+    console.timeEnd();
+    console.log('Recursive fibonacci ended...');
+
+    console.log('For loop fibonacci starting...');
+    console.time();
+    for (i = 0; i < 20; i++) {
+      fibonacci_for(i);
+    }
+    console.timeEnd();
+    console.log('For loop fibonacci ended...');
   }
 </script>
 <script src="./script.js"></script>
