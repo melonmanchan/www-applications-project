@@ -1,10 +1,10 @@
-for f in 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34
-do
-    echo "Launching $f"
-    chromium-browser http://localhost:8000/wasm/?n=$f
-    sleep 2
-    chromium-browser http://localhost:8000/asmjs/?n=$f
-    sleep 2
-    chromium-browser http://localhost:8000/js/?n=$f
-    sleep 2
+for i in $(seq 1 40); do
+    for t in wasm asmjs js; do
+        echo "Launching $t with n=$i"
+        chromium-browser http://localhost:8000/docs/$t/?n=$i --incognito
+        pid=$!
+        dur=$(expr $i \* 3)
+        echo "Going to sleep for $dur seconds"
+        sleep $dur
+    done
 done
