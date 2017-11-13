@@ -47,7 +47,7 @@ $(function() {
       js: []
     };
 
-    $.each(data, function(key, value) {
+    $.each(data.sort(compare), function(key, value) {
       var result = value.data;
       switch (result.type) {
         case 'WASM':
@@ -105,3 +105,7 @@ $(function() {
     new Highcharts.chart('results-for', options);
   });
 });
+
+function compare(a, b) {
+  return a.data.amount - b.data.amount
+}
