@@ -34,7 +34,7 @@ $(function() {
     }
   };
 
-  $.getJSON('http://159.89.0.207:3000/fibonacci', function(data) {
+  $.getJSON('https://olavihaapala.fi:3000/fibonacci', function(data) {
     var recursiveData = {
       wasm: [],
       asmjs: [],
