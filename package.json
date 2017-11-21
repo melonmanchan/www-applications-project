@@ -25,6 +25,7 @@
     "mongodb": "^2.2.33",
     "ramda": "^0.25.0",
     "request": "^2.83.0",
+    "selenium-webdriver": "^3.6.0",
     "useragent": "^2.2.1",
     "yamlparser": "0.0.2"
   }
