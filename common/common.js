@@ -31,9 +31,15 @@ function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
   results.forLoop = fEnd - fStart;
 
   console.log(JSON.stringify(results));
-
-  // post results to server
   var url = "https://olavihaapala.fi/api/measurements/fibonacci";
+  postResult(url, results);
+
+  document.querySelector(".recursive").innerHTML = results.recursive;
+  document.querySelector(".for").innerHTML = results.forLoop;
+}
+
+function postResults(url, results) {
+  // post results to server
   var request = new XMLHttpRequest();
   request.onreadystatechange = function() {
     if (request.readyState == 4) {
@@ -54,7 +60,4 @@ function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
   request.open("POST", url, true);
   request.setRequestHeader("Content-type", "application/json");
   request.send(JSON.stringify(results));
-
-  document.querySelector(".recursive").innerHTML = results.recursive;
-  document.querySelector(".for").innerHTML = results.forLoop;
 }

@@ -1,0 +1,17 @@
+<div>
+  <h1>Matrix multiplication results</h1>
+  <div class="results">
+  </div>
+</div>
+
+
+<script src="../../common/common.js"></script>
+<script src="../../common/matrix.js"></script>
+<script>
+  Module = {};
+  Module.noInitialRun = true;
+  Module.onRuntimeInitialized = function () {
+    window.runEmscripten("ASMJS")
+  }
+</script>
+<script src="./output.asm.js"></script>
