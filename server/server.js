@@ -1,9 +1,7 @@
 const client = require("mongodb").MongoClient;
-
+const parseUserAgent = require("./middleware/useragent");
 const cors = require("@koa/cors");
-const ua = require("useragent");
 const R = require("ramda");
-ua(true);
 const koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const route = require("koa-route");
@@ -18,37 +16,20 @@ async function setUpApp() {
   const db = await client.connect(url);
   const collection = db.collection("results");
 
+  app.use(parseUserAgent);
+
   app.use(
-    route.post("/fibonacci", async ctx => {
+    route.post("/fibonacci", async (ctx, next) => {
       try {
-        const agent =
-          ctx.request.header["user-agent"] ||
-          ctx.request.header["x-user-agent"];
-        const userAgent = ua.parse(agent);
         const { type } = ctx.request.body;
 
-        userAgent.os;
-        userAgent.device;
-
-        const { family, major, minor, patch } = userAgent.toJSON();
-
-        const browser = {
-          family,
-          major,
-          minor,
-          patch
-        };
-
         const data = {
+          ...ctx.request.data,
           type: type,
-          browser: browser,
-          device: userAgent.device,
-          os: userAgent.os,
-          raw: agent,
-          created_at: new Date(),
           data: ctx.request.body || {}
         };
 
+        console.log(data);
         await collection.insertOne(data);
         ctx.response.statusCode = 200;
         ctx.response.body = data;
