@@ -35,7 +35,9 @@ $(function() {
     }
   };
 
-  $.getJSON('https://olavihaapala.fi/api/fibonacci', function(data) {
+  $.getJSON('https://olavihaapala.fi/api/measurements/fibonacci', function(
+    data
+  ) {
     var recursiveData = {
       wasm: [],
       asmjs: [],

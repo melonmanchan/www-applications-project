@@ -1,0 +1,14 @@
+<div>
+  <h1>Matrix multiplication results</h1>
+  <div class="results">Trying to run...</div>
+</div>
+
+<script src="../../common/matrix.js"></script>
+<script src="./gpu.js"></script>
+<script src="./script.js"></script>
+<script>
+  window.onload = function () {
+    window.runAndMeasure(run, 'JS');
+    window.title = 'done';
+  }
+</script>
