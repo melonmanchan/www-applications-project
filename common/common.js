@@ -38,9 +38,9 @@ function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
   request.onreadystatechange = function() {
     if (request.readyState == 4) {
       if (request.status == 200) {
+        document.title = "done";
         data = JSON.parse(request.responseText);
         console.log("POST success, result:", data);
-        window.title = "done";
       } else {
         console.error(
           "Error in POST! The status is " +
