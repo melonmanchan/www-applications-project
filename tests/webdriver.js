@@ -1,8 +1,10 @@
 const webdriver = require("selenium-webdriver");
-const baseUrl = "https://melonmanchan.github.io/www-applications-project/";
+const baseUrl = "https://melonmanchan.github.io/www-applications-project";
+
 const projects = [
   {
     name: "fibonacci",
+    testsAvailable: ["js", "wasm", "asmjs"],
     parameters: ["n=10", "n=20", "n=30"]
   }
 ];
@@ -36,20 +38,26 @@ const capabilitiesUsed = [
 for (const c of capabilitiesUsed) {
   for (const p of projects) {
     for (const params of p.parameters) {
-      console.log(
-        `Running test ${p.name} on browser ${
-          c.browserName
-        } with query parameters ${params}`
-      );
+      for (t of p.testsAvailable) {
+        console.log(
+          `Running test ${p.name} ${t} on browser ${
+            c.browserName
+          } with query parameters ${params}`
+        );
 
-      var driver = new webdriver.Builder()
-        .usingServer("http://hub-cloud.browserstack.com/wd/hub")
-        .withCapabilities(c)
-        .build();
+        const url = `${baseUrl}/${p.name}/${t}/?${params}`;
 
-      driver.get(`${baseUrl}/${p.name}?${params}`);
-      driver.wait(webdriver.until.titleIs("done"), 20000);
-      driver.quit();
+        console.log(`url is ${url}`);
+
+        var driver = new webdriver.Builder()
+          .usingServer("http://hub-cloud.browserstack.com/wd/hub")
+          .withCapabilities(c)
+          .build();
+
+        driver.get(url);
+        driver.wait(webdriver.until.titleIs("done"), 20000);
+        driver.quit();
+      }
     }
   }
 }
