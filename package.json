@@ -4,7 +4,9 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./server/server.js"
+    "start": "node ./server/server.js",
+    "format":
+      "prettier --write  './**/**/*.js' '!./**/*asm.js' '!./**/gpu.js' '!./**/jquery.js'"
   },
   "repository": {
     "type": "git",
@@ -28,5 +30,8 @@
     "selenium-webdriver": "^3.6.0",
     "useragent": "^2.2.1",
     "yamlparser": "0.0.2"
+  },
+  "devDependencies": {
+    "prettier": "^1.8.2"
   }
 }

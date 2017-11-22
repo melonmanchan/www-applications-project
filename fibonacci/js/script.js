@@ -1,13 +1,13 @@
 function fibonacci(n) {
   if (n <= 1) {
-    return n
+    return n;
   } else {
-    return fibonacci(n-1) + fibonacci(n-2)
+    return fibonacci(n - 1) + fibonacci(n - 2);
   }
 }
 
-function fibonacci_for (n) {
-  if (n <= 1){
+function fibonacci_for(n) {
+  if (n <= 1) {
     return n;
   }
 
@@ -15,7 +15,7 @@ function fibonacci_for (n) {
 
   var fiboPrev = 1;
 
-  for (var i = 2; i < n; ++i){
+  for (var i = 2; i < n; ++i) {
     var temp = fibo;
     fibo += fiboPrev;
     fiboPrev = temp;
