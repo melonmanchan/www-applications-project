@@ -19,7 +19,6 @@
     var fibonacci = Module.cwrap('fibonacci', 'number', ['number']);
     var fibonacci_for = Module.cwrap('fibonacci_for', 'number', ['number']);
     window.runAndMeasure(fibonacci, fibonacci_for, 'WASM');
-    window.title = 'done'
   }
 </script>
 <script src="./output.wasm.js"></script>
