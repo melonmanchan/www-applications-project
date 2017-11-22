@@ -1,39 +1,25 @@
-function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
+function runAndMeasure(matrixFn, type) {
   var amount = parseInt(window.location.search.split("?n=")[1]);
   var results = {
-    recursive: 0,
-    forLoop: 0,
+    multiplication: 0,
     amount: amount,
     type: type
   };
 
   console.log(amount);
-  console.log("Recursive fibonacci starting...");
+  console.log("Matrix multiplication starting...");
   console.time();
   var rStart = performance.now();
-  for (i = 0; i < amount; i++) {
-    recursiveFibonacci(i);
+  for (i = 1; i < amount + 1; i++) {
+    matrixFn(i);
   }
   var rEnd = performance.now();
   console.timeEnd();
-  console.log("Recursive fibonacci ended...");
-  results.recursive = rEnd - rStart;
-
-  console.log("For loop fibonacci starting...");
-  console.time();
-  var fStart = performance.now();
-  for (i = 0; i < amount; i++) {
-    forLoopFibonacci(i);
-  }
-  var fEnd = performance.now();
-  console.timeEnd();
-  console.log("For loop fibonacci ended...");
-  results.forLoop = fEnd - fStart;
-
-  console.log(JSON.stringify(results));
+  console.log("Matrix multiplication ended...");
+  results.multiplication = rEnd - rStart;
 
   // post results to server
-  var url = "https://olavihaapala.fi/api/measurements/fibonacci";
+  var url = "https://olavihaapala.fi/api/measurements/matrix";
   var request = new XMLHttpRequest();
   request.onreadystatechange = function() {
     if (request.readyState == 4) {
@@ -55,6 +41,5 @@ function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
   request.setRequestHeader("Content-type", "application/json");
   request.send(JSON.stringify(results));
 
-  document.querySelector(".recursive").innerHTML = results.recursive;
-  document.querySelector(".for").innerHTML = results.forLoop;
+  document.querySelector(".results").innerHTML = JSON.stringify(results);
 }
