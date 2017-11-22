@@ -22,7 +22,7 @@ async function setUpApp() {
       "/measurements/:measurementType",
       async (ctx, measurementType) => {
         try {
-          const collection = db.collection(`results-${measurementType}`);
+          const collection = db.collection(`results_${measurementType}`);
           const { type } = ctx.request.body;
 
           const data = {
@@ -49,7 +49,7 @@ async function setUpApp() {
       "/measurements/:measurementType",
       async (ctx, measurementType) => {
         var browser = ctx.request.query.browser || undefined;
-        const collection = db.collection(`results-${measurementType}`);
+        const collection = db.collection(`results_${measurementType}`);
         try {
           var data;
           if (typeof browser === "undefined") {
