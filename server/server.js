@@ -79,6 +79,23 @@ async function setUpApp() {
     )
   );
 
+  app.use(
+    route.post("/error", async ctx => {
+      const collection = db.collection(`errors`);
+
+      const data = {
+        ...ctx.request.data,
+        errorArguments: ctx.request.body.errorArguments
+      };
+
+      console.error("Something went wrong during browserstack run", data);
+
+      await collection.insertOne(data);
+      ctx.response.statusCode = 200;
+      ctx.response.body = data;
+    })
+  );
+
   console.log("app listening on port 3000");
 
   app.listen(3000);

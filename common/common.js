@@ -1,3 +1,22 @@
+// Setting up globals
+window.onerror = function() {
+  var arr = Array.prototype.slice.call(arguments);
+
+  // post results to server
+  var url = "https://olavihaapala.fi/api/error";
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      document.title = "done";
+    }
+  };
+
+  request.open("POST", url, true);
+  request.setRequestHeader("Content-type", "application/json");
+  request.send(JSON.stringify({ errorArguments: arr }));
+};
+
+// Utility functions
 function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
   var amount = parseInt(window.location.search.split("?n=")[1]);
   var results = {
