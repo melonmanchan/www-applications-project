@@ -75,6 +75,8 @@ function runEmscripten(type, functionName, dataType) {
 
   var result = new dataType(outHeap.buffer, outHeap.byteOffset, out.length);
 
+  console.log(result);
+
   Module._free(mat1Heap.byteOffset);
   Module._free(mat2Heap.byteOffset);
   Module._free(outHeap.byteOffset);
@@ -83,6 +85,6 @@ function runEmscripten(type, functionName, dataType) {
   results.multiplication = rEnd - rStart;
 
   var url = "https://olavihaapala.fi/api/measurements/matrix";
-  postResults(url, results);
+  // postResults(url, results);
   document.querySelector(".results").innerHTML = JSON.stringify(results);
 }
