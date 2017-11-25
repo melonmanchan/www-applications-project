@@ -11,7 +11,7 @@
   Module = {};
   Module.noInitialRun = true;
   Module.onRuntimeInitialized = function () {
-    window.runEmscripten("WASM")
+    window.runEmscripten("WASM", "float_multiply_matrix", Float32Array)
   }
 </script>
 <script src="./output.wasm.js"></script>

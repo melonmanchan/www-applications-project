@@ -21,16 +21,17 @@ function runAndMeasure(matrixFn, type) {
   document.querySelector(".results").innerHTML = JSON.stringify(results);
 }
 
-function runEmscripten(type) {
+function runEmscripten(type, functionName, dataType) {
   var size = parseInt(window.location.search.split("?n=")[1]);
   var results = {
     multiplication: 0,
     size: size,
-    type: type
+    type: type,
+    functionName: functionName
   };
 
   // Import function from Emscripten generated file
-  var float_multiply_matrix = Module.cwrap("float_multiply_matrix", "number", [
+  var float_multiply_matrix = Module.cwrap(functionName, "number", [
     "number",
     "number",
     "number",
@@ -40,9 +41,9 @@ function runEmscripten(type) {
   var width = size;
   var height = size;
 
-  var mat1 = new Float32Array(width * height);
-  var mat2 = new Float32Array(width * height);
-  var out = new Float32Array(width * height);
+  var mat1 = new dataType(width * height);
+  var mat2 = new dataType(width * height);
+  var out = new dataType(width * height);
 
   for (var i = 0; i < size * height; i++) {
     mat1[i] = i + 1;
@@ -71,11 +72,8 @@ function runEmscripten(type) {
     outHeap.byteOffset,
     size
   );
-  var result = new Float32Array(outHeap.buffer, outHeap.byteOffset, out.length);
 
-  console.log(mat1);
-  console.log(mat2);
-  console.log(result);
+  var result = new dataType(outHeap.buffer, outHeap.byteOffset, out.length);
 
   Module._free(mat1Heap.byteOffset);
   Module._free(mat2Heap.byteOffset);
