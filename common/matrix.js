@@ -1,4 +1,20 @@
-function runAndMeasure(matrixFn, type) {
+// RETURNS PSEUDO-RANDOM NUMBER IN RANGE min...max
+function randomNumber(min, max) {
+  return Math.round((max - min) * Math.random() + min);
+}
+
+function createRandomMatrix(size) {
+  var ret = [];
+  for (var a = 0; a < size; ++a) {
+    ret[a] = [];
+    for (var i = 0; i < size; ++i) {
+      ret[a][i] = randomNumber(1, size * size);
+    }
+  }
+  return ret;
+}
+
+function runAndMeasure(matrixFn, type, mat1, mat2) {
   var size = parseInt(window.location.search.split("?n=")[1]);
   var results = {
     multiplication: 0,
@@ -9,7 +25,7 @@ function runAndMeasure(matrixFn, type) {
   console.log("Matrix multiplication starting...");
   console.time();
   var rStart = performance.now();
-  matrixFn(size);
+  matrixFn(size, mat1, mat2);
   var rEnd = performance.now();
   console.timeEnd();
   console.log("Matrix multiplication ended...");

@@ -21,26 +21,8 @@ function createMatMult(size) {
   );
 }
 
-// RETURNS PSEUDO-RANDOM NUMBER IN RANGE min...max
-function randomNumber(min, max) {
-  return Math.round((max - min) * Math.random() + min);
-}
-
-function createRandomMatrix(size) {
-  var ret = [];
-  for (var a = 0; a < size; ++a) {
-    ret[a] = [];
-    for (var i = 0; i < size; ++i) {
-      ret[a][i] = randomNumber(1, size * size);
-    }
-  }
-  return ret;
-}
-
-function run(size) {
-  var a = createRandomMatrix(size),
-    b = createRandomMatrix(size),
-    matMult = createMatMult(size);
+function run(size, a, b) {
+  var matMult = createMatMult(size);
   var res = matMult(a, b);
   return res;
 }

@@ -5,14 +5,12 @@
 
 <script src="../../common/common.js"></script>
 <script src="../../common/matrix.js"></script>
-<script src="./gpu.js"></script>
 <script src="./script.js"></script>
 <script>
   window.onload = function () {
     var size = parseInt(window.location.search.split("?n=")[1]);
     var a = createRandomMatrix(size)
     var b = createRandomMatrix(size)
-
-    window.runAndMeasure(run, 'GPU.JS', a, b);
+    window.runAndMeasure(run, 'JS', a, b);
   }
 </script>
