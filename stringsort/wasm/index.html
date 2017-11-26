@@ -21,17 +21,19 @@
 
             var str = ['ccc', 'ggg', 'aaa']
 
-            var joined = str.join(';') + ';'
+            var joined = []
+
+            for (var i = 0; i < str.length; i++) {
+              joined = joined.concat(Module.intArrayFromString(str[i]))
+            }
+
 
             var data = new Uint8Array(joined.length);
 
             for (var i = 0; i < joined.length; i++) {
-              if (joined[i] == ';') {
-                data[i] = 0
-              } else {
-                data[i] = joined.charCodeAt(i)
-              }
+              data[i] = joined[i]
             }
+
 
             // Get data byte size, allocate memory on Emscripten heap, and get pointer
             var nDataBytes = data.length * data.BYTES_PER_ELEMENT;
@@ -41,10 +43,12 @@
             var dataHeap = new Uint8Array(Module.HEAPU8.buffer, dataPtr, nDataBytes);
             dataHeap.set( new Uint8Array(data.buffer) );
 
-            var pointers = new Uint8Array(str.length);
+            var pointers = new Uint32Array(str.length);
             for (var i = 0; i < pointers.length; i++) {
               pointers[i] = dataPtr + i * data.BYTES_PER_ELEMENT * (str[i].length + 1);
             }
+
+            console.log(pointers)
 
             // Allocate bytes needed for the array of pointers
             var nPointerBytes = pointers.length * pointers.BYTES_PER_ELEMENT
@@ -60,12 +64,10 @@
 
             var result = new Uint8Array(dataHeap.buffer, dataHeap.byteOffset, data.length);
 
-            console.log(pointerHeap.byteOffset)
-            console.log(dataHeap.byteOffset)
-            console.log(dataHeap.buffer)
             // Free memory
             Module._free(pointerHeap.byteOffset);
             Module._free(dataHeap.byteOffset);
+            console.log(joined)
             console.log(result)
           }
         </script>
