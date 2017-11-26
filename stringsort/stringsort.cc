@@ -10,6 +10,9 @@ int stringcmp(const void *a, const void *b) {
 
 extern "C" {
   void sortArr (char **arr, int len) {
+    // arr[0][0] = len;
+    // arr[1][0] = 'z';
+    // arr[2][0] = 'z';
     qsort(arr, len, sizeof(char *), stringcmp);
   }
 }

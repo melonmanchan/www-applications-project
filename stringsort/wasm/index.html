@@ -28,7 +28,7 @@
             }
 
 
-            var data = new Uint8Array(joined.length);
+            var data = new Int32Array(joined.length);
 
             for (var i = 0; i < joined.length; i++) {
               data[i] = joined[i]
@@ -62,7 +62,7 @@
             // the array of pointers on the Emscripten heap.  Emscripten knows what to do!
             sortArr(pointerHeap.byteOffset, str.length);
 
-            var result = new Uint8Array(dataHeap.buffer, dataHeap.byteOffset, data.length);
+            var result = new Int32Array(dataHeap.buffer, dataHeap.byteOffset, data.length);
 
             // Free memory
             Module._free(pointerHeap.byteOffset);
