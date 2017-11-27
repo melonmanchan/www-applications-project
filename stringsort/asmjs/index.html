@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Hello World !</title>
+        <script src="../../common/common.js"></script>
+        <script>
+          Module = {}
+
+          Module.printErr = function (text) {
+            alert(text)
+          }
+
+          Module.noInitialRun = true;
+          Module.onRuntimeInitialized = function () {
+
+            // Import function from Emscripten generated file
+            var sortArr = Module.cwrap(
+              'sortArr', null, ['number', 'number']
+            );
+
+            var str = ['ccc', 'ggg', 'asdasd', 'vcxvvxcxcv', 'aaa']
+
+            var joined = []
+
+            for (var i = 0; i < str.length; i++) {
+              joined = joined.concat(Module.intArrayFromString(str[i]))
+            }
+
+
+            var data = new Uint32Array(joined.length);
+
+            for (var i = 0; i < joined.length; i++) {
+              data[i] = joined[i]
+            }
+
+
+            // Get data byte size, allocate memory on Emscripten heap, and get pointer
+            var nDataBytes = data.length * data.BYTES_PER_ELEMENT;
+            var dataPtr = Module._malloc(nDataBytes);
+
+            // Copy data to Emscripten heap
+            var dataHeap = new Uint8Array(Module.HEAPU8.buffer, dataPtr, nDataBytes);
+            dataHeap.set( new Uint8Array(data.buffer) );
+
+            var pointers = new Uint32Array(str.length);
+            for (var i = 0; i < pointers.length; i++) {
+              pointers[i] = dataPtr + i * data.BYTES_PER_ELEMENT * (str[i].length + 1);
+            }
+
+            console.log(pointers)
+
+            // Allocate bytes needed for the array of pointers
+            var nPointerBytes = pointers.length * pointers.BYTES_PER_ELEMENT
+            var pointerPtr = Module._malloc(nPointerBytes);
+
+            // Copy array of pointers to Emscripten heap
+            var pointerHeap = new Uint8Array(Module.HEAPU8.buffer, pointerPtr, nPointerBytes);
+            pointerHeap.set( new Uint8Array(pointers.buffer) );
+
+            // Call the function by passing a number pointing to the byte location of 
+            // the array of pointers on the Emscripten heap.  Emscripten knows what to do!
+            sortArr(pointerHeap.byteOffset, str.length);
+
+            var result = new Uint32Array(dataHeap.buffer, dataHeap.byteOffset, data.length);
+
+            // Free memory
+            Module._free(pointerHeap.byteOffset);
+            Module._free(dataHeap.byteOffset);
+            console.log(joined)
+            console.log(result)
+          }
+        </script>
+    </head>
+    <script src="./output.asm.js"></script>
+</html>
