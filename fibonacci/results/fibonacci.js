@@ -96,7 +96,7 @@ function onProcessPerBrowserData(d) {
   const data = processData(d);
   let options = defaultOptions;
   options.title = {
-    text: "Results"
+    text: "Results recursive for browser"
   };
 
   options.series = [
@@ -114,11 +114,37 @@ function onProcessPerBrowserData(d) {
     }
   ];
 
-  drawChart("per-browser", options);
+  drawChart("per-browser-recursive", options);
+
+  options.title = {
+    text: "Results for loop for browser"
+  };
+
+  options.series = [
+    {
+      name: "wasm",
+      data: data.forLoopData.wasm
+    },
+    {
+      name: "asm.js",
+      data: data.forLoopData.asmjs
+    },
+    {
+      name: "JS",
+      data: data.forLoopData.js
+    }
+  ];
+
+  drawChart("per-browser-for", options);
 }
 
 $(function() {
   const url = "https://olavihaapala.fi/api/measurements/fibonacci";
   fetchData(url, dataReceived);
   perBrowser("firefox");
+});
+
+$(".per-browser-select").change(function() {
+  console.log(this.value);
+  perBrowser(this.value);
 });

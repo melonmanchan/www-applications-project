@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Results page">
+    <link rel="stylesheet" href="../../common/styles.css">
     <title>Results</title>
 </head>
 
@@ -18,7 +19,20 @@
         <div id="fibonacci-for" class="result-chart"></div>
         <hr>
         <h2>Results per browser</h2>
-        <div id="per-browser" class="result-chart"></div>
+        <select class="per-browser-select">
+            <option value="firefox">firefox</option>
+            <option value="chrome">chrome</option>
+            <option value="internet explorer">internet explorer</option>
+            <option value="safari">safari</option>
+            <option value="opera">opera</option>
+            <option value="edge">edge</option>
+            <option value="iPad">iPad</option>
+            <option value="iPhone">iPhone</option>
+            <option value="android">android</option>
+        </select>
+        <div id="per-browser-recursive" class="result-chart"></div>
+        <hr>
+        <div id="per-browser-for" class="result-chart"></div>
     </div>
 
     <script src="../../vendor/jquery.js"></script>

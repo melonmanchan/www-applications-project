@@ -1,0 +1,9 @@
+.results-container {
+  text-align: center;
+}
+
+.result-chart {
+  height: 450px;
+  width: 95%;
+  margin: 40px auto;
+}
