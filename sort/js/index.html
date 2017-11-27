@@ -28,7 +28,8 @@
     var fEnd = performance.now();
 
     results.sorting = fEnd - fStart
-    var url = "https://olavihaapala.fi/api/measurements/fibonacci";
+    var url = "https://olavihaapala.fi/api/measurements/sort";
     postResults(url, results);
+    document.querySelector(".results").innerHTML = JSON.stringify(results);
   }
 </script>
