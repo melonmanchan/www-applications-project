@@ -101,6 +101,6 @@ function runEmscripten(type, functionName, dataType) {
   results.multiplication = rEnd - rStart;
 
   var url = "https://olavihaapala.fi/api/measurements/matrix";
-  // postResults(url, results);
+  postResults(url, results);
   document.querySelector(".results").innerHTML = JSON.stringify(results);
 }
