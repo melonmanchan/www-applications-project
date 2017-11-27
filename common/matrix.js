@@ -1,106 +1,82 @@
-// RETURNS PSEUDO-RANDOM NUMBER IN RANGE min...max
-function randomNumber(min, max) {
-  return Math.round((max - min) * Math.random() + min);
-}
+// Setting up globals
+window.onerror = function() {
+  var arr = Array.prototype.slice.call(arguments);
 
-function createRandomMatrix(size) {
-  var ret = [];
-  for (var a = 0; a < size; ++a) {
-    ret[a] = [];
-    for (var i = 0; i < size; ++i) {
-      ret[a][i] = randomNumber(1, size * size);
+  // post results to server
+  var url = "https://olavihaapala.fi/api/error";
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      document.title = "done";
     }
-  }
-  return ret;
-}
+  };
 
-function runAndMeasure(matrixFn, type, mat1, mat2) {
-  var size = parseInt(window.location.search.split("?n=")[1]);
+  request.open("POST", url, true);
+  request.setRequestHeader("Content-type", "application/json");
+  request.send(JSON.stringify({ errorArguments: arr }));
+};
+
+// Utility functions
+function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
+  var amount = parseInt(window.location.search.split("?n=")[1]);
   var results = {
-    multiplication: 0,
-    size: size,
+    recursive: 0,
+    forLoop: 0,
+    amount: amount,
     type: type
   };
 
-  console.log("Matrix multiplication starting...");
+  console.log(amount);
+  console.log("Recursive fibonacci starting...");
   console.time();
   var rStart = performance.now();
-  matrixFn(size, mat1, mat2);
+  for (i = 0; i < amount; i++) {
+    recursiveFibonacci(i);
+  }
   var rEnd = performance.now();
   console.timeEnd();
-  console.log("Matrix multiplication ended...");
-  results.multiplication = rEnd - rStart;
+  console.log("Recursive fibonacci ended...");
+  results.recursive = rEnd - rStart;
 
-  // post results to server
-  var url = "https://olavihaapala.fi/api/measurements/matrix";
+  console.log("For loop fibonacci starting...");
+  console.time();
+  var fStart = performance.now();
+  for (i = 0; i < amount; i++) {
+    forLoopFibonacci(i);
+  }
+  var fEnd = performance.now();
+  console.timeEnd();
+  console.log("For loop fibonacci ended...");
+  results.forLoop = fEnd - fStart;
+
+  console.log(JSON.stringify(results));
+  var url = "https://olavihaapala.fi/api/measurements/fibonacci";
   postResults(url, results);
-  document.querySelector(".results").innerHTML = JSON.stringify(results);
+
+  document.querySelector(".recursive").innerHTML = results.recursive;
+  document.querySelector(".for").innerHTML = results.forLoop;
 }
 
-function runEmscripten(type, functionName, dataType) {
-  var size = parseInt(window.location.search.split("?n=")[1]);
-  var results = {
-    multiplication: 0,
-    size: size,
-    type: type,
-    functionName: functionName
+function postResults(url, results) {
+  // post results to server
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      if (request.status == 200) {
+        document.title = "done";
+        data = JSON.parse(request.responseText);
+        console.log("POST success, result:", data);
+      } else {
+        console.error(
+          "Error in POST! The status is " +
+            request.status +
+            " - " +
+            request.responseText
+        );
+      }
+    }
   };
-
-  // Import function from Emscripten generated file
-  var float_multiply_matrix = Module.cwrap(functionName, "number", [
-    "number",
-    "number",
-    "number",
-    "number"
-  ]);
-
-  var width = size;
-  var height = size;
-
-  var mat1 = new dataType(width * height);
-  var mat2 = new dataType(width * height);
-  var out = new dataType(width * height);
-
-  for (var i = 0; i < size * height; i++) {
-    mat1[i] = i + 1;
-    mat2[i] = i + 1;
-  }
-
-  var nDataBytes = mat1.length * mat1.BYTES_PER_ELEMENT;
-
-  var mat1Ptr = Module._malloc(nDataBytes);
-  var mat2Ptr = Module._malloc(nDataBytes);
-  var outPtr = Module._malloc(nDataBytes);
-
-  var mat1Heap = new Uint8Array(Module.HEAPU8.buffer, mat1Ptr, nDataBytes);
-  mat1Heap.set(new Uint8Array(mat1.buffer));
-
-  var mat2Heap = new Uint8Array(Module.HEAPU8.buffer, mat2Ptr, nDataBytes);
-  mat2Heap.set(new Uint8Array(mat2.buffer));
-
-  var outHeap = new Uint8Array(Module.HEAPU8.buffer, outPtr, nDataBytes);
-  outHeap.set(new Uint8Array(out.buffer));
-
-  var rStart = performance.now();
-  float_multiply_matrix(
-    mat1Heap.byteOffset,
-    mat2Heap.byteOffset,
-    outHeap.byteOffset,
-    size
-  );
-
-  var result = new dataType(outHeap.buffer, outHeap.byteOffset, out.length);
-
-  console.log(result);
-
-  Module._free(mat1Heap.byteOffset);
-  Module._free(mat2Heap.byteOffset);
-  Module._free(outHeap.byteOffset);
-
-  var rEnd = performance.now();
-  results.multiplication = rEnd - rStart;
-
-  var url = "https://olavihaapala.fi/api/measurements/matrix";
-  // postResults(url, results);
-  document.querySelector(".results").innerHTML = JSON.stringify(results);
+  request.open("POST", url, true);
+  request.setRequestHeader("Content-type", "application/json");
+  request.send(JSON.stringify(results));
 }

@@ -1,0 +1,23 @@
+<div class="results">Trying to run...</div>
+  <script>
+    Module = {}
+
+    Module.noInitialRun = true;
+    Module.onRuntimeInitialized = function () {
+      var type = window.location.search.split("type=")[1];
+
+      switch (type) {
+          case 'f':
+            window.runEmscripten("WASM", "float_sort", Float32Array)
+            break;
+          case 'i':
+            window.runEmscripten("WASM", "int_sort", Int32Array)
+            break;
+          case 'd':
+            window.runEmscripten("WASM", "double_sort", Float64Array)
+            break;
+      }
+    }
+  </script>
+<script src="../../common/sort.js"></script>
+<script src="./output.asm.js"></script>
