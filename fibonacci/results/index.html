@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Results page">
+    <title>Results</title>
+</head>
+
+<body>
+    <div class="results-container fibonacci">
+        <a href="/">Back to front page</a>
+        <h1>Fibonacci results</h1>
+        <hr>
+        <div id="fibonacci-recursive" class="result-chart"></div>
+        <hr>
+        <div id="fibonacci-for" class="result-chart"></div>
+        <hr>
+        <h2>Results per browser</h2>
+        <div id="per-browser" class="result-chart"></div>
+    </div>
+
+    <script src="../../vendor/jquery.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="../../common/utils.js"></script>
+    <script src="../../common/charts.js"></script>
+    <script src="fibonacci.js"></script>
+</body>
+
+</html>
