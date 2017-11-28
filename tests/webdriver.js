@@ -54,9 +54,13 @@ for (const c of capabilitiesUsed) {
           .withCapabilities(c)
           .build();
 
-        driver.get(url);
-        driver.wait(webdriver.until.titleIs("done"), 20000);
-        driver.quit();
+        try {
+          driver.get(url);
+          driver.wait(webdriver.until.titleIs("done"), 20000);
+          driver.quit();
+        } catch (ex) {
+          console.log(ex);
+        }
       }
     }
   }
