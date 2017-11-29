@@ -2,11 +2,31 @@ const webdriver = require("selenium-webdriver");
 const baseUrl = "https://melonmanchan.github.io/www-applications-project";
 
 const projects = [
+  // {
+  //   name: "matrix",
+  //   testsAvailable: ["js", "wasm", "asmjs", "gpujs"],
+  //   parameters: [
+  //     "n=10&type=f",
+  //     "n=100&type=f",
+  //     "n=1000&type=f",
+  //     "n=10000&type=f"
+  //   ]
+  // },
   {
     name: "fibonacci",
     testsAvailable: ["js", "wasm", "asmjs"],
     parameters: ["n=10", "n=20", "n=30"]
   }
+  // {
+  //   name: "sort",
+  //   testsAvailable: ["js", "wasm", "asmjs"],
+  //   parameters: [
+  //     "n=10&type=f",
+  //     "n=100&type=f",
+  //     "n=1000&type=f",
+  //     "n=10000&type=f"
+  //   ]
+  // }
 ];
 
 // Input capabilities
@@ -24,15 +44,15 @@ const createBrowserStackCapability = browserName => ({
 });
 
 const capabilitiesUsed = [
-  createBrowserStackCapability("firefox"),
-  createBrowserStackCapability("chrome"),
   createBrowserStackCapability("internet explorer"),
   createBrowserStackCapability("safari"),
   createBrowserStackCapability("opera"),
   createBrowserStackCapability("edge"),
   createBrowserStackCapability("iPad"),
   createBrowserStackCapability("iPhone"),
-  createBrowserStackCapability("android")
+  createBrowserStackCapability("android"),
+  createBrowserStackCapability("firefox"),
+  createBrowserStackCapability("chrome")
 ];
 
 for (const c of capabilitiesUsed) {

@@ -59,6 +59,21 @@ async function setUpApp() {
               case "chrome":
                 browser = "Chrome";
                 break;
+              case "internet explorer":
+                browser = "ie";
+                break;
+              case "safari_mobile":
+                browser = "Mobile Safari";
+                break;
+              case "android":
+                browser = "Mobile Chrome";
+                break;
+              case "edge":
+                browser = "Edge";
+                break;
+              case "safari":
+                browser = "Safari";
+                break;
               case "firefox":
                 browser = "Firefox";
                 break;
