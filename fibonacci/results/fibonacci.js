@@ -145,6 +145,5 @@ $(function() {
 });
 
 $(".per-browser-select").change(function() {
-  console.log(this.value);
   perBrowser(this.value);
 });
