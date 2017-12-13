@@ -8,13 +8,13 @@
 
       switch (type) {
           case 'f':
-            window.runEmscripten("WASM", "float_sort", Float32Array)
+            window.runEmscripten("ASMJS", "float_sort", Float32Array)
             break;
           case 'i':
-            window.runEmscripten("WASM", "int_sort", Int32Array)
+            window.runEmscripten("ASMJS", "int_sort", Int32Array)
             break;
           case 'd':
-            window.runEmscripten("WASM", "double_sort", Float64Array)
+            window.runEmscripten("ASMJS", "double_sort", Float64Array)
             break;
       }
     }

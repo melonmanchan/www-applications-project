@@ -17,9 +17,13 @@
   Module = {};
   Module.noInitialRun = true;
   Module.onRuntimeInitialized = function () {
-    var fibonacci = Module.cwrap('fibonacci', 'number', ['number']);
-    var fibonacci_for = Module.cwrap('fibonacci_for', 'number', ['number']);
-    window.runAndMeasure(fibonacci, fibonacci_for, 'WASM');
+    try {
+      var fibonacci = Module.cwrap('fibonacci', 'number', ['number']);
+      var fibonacci_for = Module.cwrap('fibonacci_for', 'number', ['number']);
+      window.runAndMeasure(fibonacci, fibonacci_for, 'WASM');
+    } catch (ex) {
+      postError(ex.message)
+    }
   }
 </script>
 <script src="./output.wasm.js"></script>

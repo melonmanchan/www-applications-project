@@ -16,6 +16,10 @@ window.onerror = function() {
   request.send(JSON.stringify({ errorArguments: arr }));
 };
 
+function postError (message) {
+  postResults({message: message}, "https://olavihaapala.fi/api/error")
+}
+
 // Utility functions
 function runAndMeasure(recursiveFibonacci, forLoopFibonacci, type) {
   var amount = parseInt(window.location.search.split("?n=")[1]);

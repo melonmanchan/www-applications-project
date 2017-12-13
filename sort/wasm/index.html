@@ -6,16 +6,20 @@
       Module.onRuntimeInitialized = function () {
         var type = window.location.search.split("type=")[1];
 
-        switch (type) {
-            case 'f':
-              window.runEmscripten("WASM", "float_sort", Float32Array)
-              break;
-            case 'i':
-              window.runEmscripten("WASM", "int_sort", Int32Array)
-              break;
-            case 'd':
-              window.runEmscripten("WASM", "double_sort", Float64Array)
-              break;
+        try {
+          switch (type) {
+              case 'f':
+                window.runEmscripten("WASM", "float_sort", Float32Array)
+                break;
+              case 'i':
+                window.runEmscripten("WASM", "int_sort", Int32Array)
+                break;
+              case 'd':
+                window.runEmscripten("WASM", "double_sort", Float64Array)
+                break;
+          }
+        } catch (ex) {
+          postError(ex.message)
         }
       }
     </script>

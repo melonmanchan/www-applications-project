@@ -76,6 +76,8 @@ async function doRun (url, capabilities) {
     await driver.wait(webdriver.until.titleIs("done"), 30000);
     driver.quit();
   } catch (ex) {
+    console.log('Failed on url ', url)
+    console.log('With capabilities: ', JSON.stringify(capabilities, null, 2))
     console.log(ex);
   }
 }

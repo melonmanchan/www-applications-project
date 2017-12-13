@@ -14,16 +14,20 @@
   Module.onRuntimeInitialized = function () {
     var type = window.location.search.split("type=")[1];
 
-    switch (type) {
-        case 'f':
-          window.runEmscripten("WASM", "float_multiply_matrix", Float32Array)
-          break;
-        case 'i':
-          window.runEmscripten("WASM", "int_multiply_matrix", Int32Array)
-          break;
-        case 'd':
-          window.runEmscripten("WASM", "double_multiply_matrix", Float64Array)
-          break;
+    try {
+      switch (type) {
+          case 'f':
+            window.runEmscripten("WASM", "float_multiply_matrix", Float32Array)
+            break;
+          case 'i':
+            window.runEmscripten("WASM", "int_multiply_matrix", Int32Array)
+            break;
+          case 'd':
+            window.runEmscripten("WASM", "double_multiply_matrix", Float64Array)
+            break;
+      }
+    } catch (ex) {
+      postError(ex.message)
     }
   }
 </script>
