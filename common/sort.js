@@ -51,7 +51,7 @@ function runEmscripten(type, functionName, dataType) {
   var rEnd = performance.now();
   results.sorting = rEnd - rStart;
 
-  var url = "https://olavihaapala.fi/api/measurements/matrix";
+  var url = "https://olavihaapala.fi/api/measurements/sort";
   postResults(url, results);
   document.querySelector(".results").innerHTML = JSON.stringify(results);
 }
