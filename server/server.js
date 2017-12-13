@@ -60,13 +60,13 @@ async function setUpApp() {
                 browser = "Chrome";
                 break;
               case "internet explorer":
-                browser = "ie";
+                browser = "IE";
                 break;
               case "safari_mobile":
                 browser = "Mobile Safari";
                 break;
               case "android":
-                browser = "Mobile Chrome";
+                browser = "Chrome Mobile";
                 break;
               case "edge":
                 browser = "Edge";

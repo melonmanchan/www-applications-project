@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Results page">
+    <link rel="stylesheet" href="../../common/styles.css">
+    <title>Results</title>
+</head>
+
+<body>
+    <div class="results-container fibonacci">
+        <a href="/">Back to front page</a>
+        <h1>Sort results</h1>
+        <hr>
+        <div id="sort-int" class="result-chart"></div>
+        <hr>
+        <div id="sort-float" class="result-chart"></div>
+        <hr>
+        <div id="sort-double" class="result-chart"></div>
+        <h2>Results per browser</h2>
+        <select class="per-browser-select">
+            <option value="firefox">firefox</option>
+            <option value="chrome">chrome</option>
+            <option value="internet explorer">internet explorer</option>
+            <option value="safari">safari</option>
+            <option value="safari_mobile">mobile safari</option>
+            <option value="opera">opera</option>
+            <option value="edge">edge</option>
+            <option value="iPad">iPad</option>
+            <option value="iPhone">iPhone</option>
+            <option value="android">android</option>
+        </select>
+        <div id="per-browser-int" class="result-chart"></div>
+        <hr>
+        <div id="per-browser-float" class="result-chart"></div>
+        <hr>
+        <div id="per-browser-double" class="result-chart"></div>
+        <hr>
+    </div>
+
+    <script src="../../vendor/jquery.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="../../common/utils.js"></script>
+    <script src="../../common/charts.js"></script>
+    <script src="sort.js"></script>
+</body>
+
+</html>
