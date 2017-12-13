@@ -12,21 +12,29 @@ const projects = [
   //     "n=10000&type=f"
   //   ]
   // },
-  {
-    name: "fibonacci",
-    testsAvailable: ["js", "wasm", "asmjs"],
-    parameters: ["n=10", "n=20", "n=30"]
-  }
-  // {
-  //   name: "sort",
-  //   testsAvailable: ["js", "wasm", "asmjs"],
-  //   parameters: [
-  //     "n=10&type=f",
-  //     "n=100&type=f",
-  //     "n=1000&type=f",
-  //     "n=10000&type=f"
-  //   ]
+  //{
+  //  name: "fibonacci",
+  //  testsAvailable: ["js", "wasm", "asmjs"],
+  //  parameters: ["n=10", "n=20", "n=30"]
   // }
+   {
+     name: "sort",
+     testsAvailable: ["js", "wasm", "asmjs"],
+     parameters: [
+       "n=10&type=f",
+       "n=100&type=f",
+       "n=1000&type=f",
+       "n=10000&type=f",
+       "n=10&type=",
+       "n=100&type=i",
+       "n=1000&type=i",
+       "n=10000&type=i",
+       "n=10&type=d",
+       "n=100&type=d",
+       "n=1000&type=d",
+       "n=10000&type=d"
+     ]
+   }
 ];
 
 // Input capabilities
@@ -55,6 +63,23 @@ const capabilitiesUsed = [
   createBrowserStackCapability("chrome")
 ];
 
+async function doRun (url, capabilities) {
+  console.log(`url is ${url}`);
+
+  var driver = new webdriver.Builder()
+    .usingServer("http://hub-cloud.browserstack.com/wd/hub")
+    .withCapabilities(capabilities)
+    .build();
+
+  try {
+    driver.get(url);
+    await driver.wait(webdriver.until.titleIs("done"), 30000);
+    driver.quit();
+  } catch (ex) {
+    console.log(ex);
+  }
+}
+
 for (const c of capabilitiesUsed) {
   for (const p of projects) {
     for (const params of p.parameters) {
@@ -67,20 +92,7 @@ for (const c of capabilitiesUsed) {
 
         const url = `${baseUrl}/${p.name}/${t}/?${params}`;
 
-        console.log(`url is ${url}`);
-
-        var driver = new webdriver.Builder()
-          .usingServer("http://hub-cloud.browserstack.com/wd/hub")
-          .withCapabilities(c)
-          .build();
-
-        try {
-          driver.get(url);
-          driver.wait(webdriver.until.titleIs("done"), 20000);
-          driver.quit();
-        } catch (ex) {
-          console.log(ex);
-        }
+        doRun(url, c);
       }
     }
   }

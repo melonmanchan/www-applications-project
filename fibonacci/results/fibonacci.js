@@ -16,7 +16,7 @@ function processData(data) {
     }
   };
 
-  $.each(data.sort(compare), function(key, value) {
+  $.each(data.sort(compareFibo), function(key, value) {
     var result = value.data;
     switch (result.type) {
       case "WASM":

@@ -21,7 +21,7 @@ function processData(data) {
     }
   };
 
-  $.each(data.sort(compare), function(key, value) {
+  $.each(data.sort(compareSort), function(key, value) {
     var result = value.data;
 
     var type = result.type

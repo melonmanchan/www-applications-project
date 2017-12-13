@@ -1,5 +1,9 @@
-function compare(a, b) {
+function compareFibo(a, b) {
   return a.data.amount - b.data.amount;
+}
+
+function compareSort (a, b) {
+  return a.data.size - b.data.size
 }
 
 function typeAvg(data) {
