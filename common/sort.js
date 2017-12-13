@@ -46,14 +46,12 @@ function runEmscripten(type, functionName, dataType) {
     input.length
   );
 
-  console.log(result);
-
   Module._free(inputHeap.byteOffset);
 
   var rEnd = performance.now();
-  results.multiplication = rEnd - rStart;
+  results.sorting = rEnd - rStart;
 
   var url = "https://olavihaapala.fi/api/measurements/matrix";
-  // postResults(url, results);
+  postResults(url, results);
   document.querySelector(".results").innerHTML = JSON.stringify(results);
 }
