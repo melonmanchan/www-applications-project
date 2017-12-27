@@ -1,0 +1,148 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{microtype}
+\begin{document}
+\title{Towards a faster web\\high-performance computing on the browser}
+
+\author{\IEEEauthorblockN{Matti Jokitulppo}
+\IEEEauthorblockA{Aalto University\\
+School of Science\\
+Email: matti.jokitulppo@aalto.fi}
+\and
+\IEEEauthorblockN{Olavi Haapala}
+\IEEEauthorblockA{Aalto University\\
+School of Science\\
+Email: olavi.haapala@aalto.fi}
+\IEEEauthorblockN{Mehrad Mohammadi}
+\IEEEauthorblockA{Aalto University\\
+School of Science\\
+Email: mehrad.mohammadi@aalto.fi}
+}
+
+% make the title area
+\maketitle
+
+\begin{abstract}
+The abstract goes here.
+\end{abstract}
+
+\section{Introduction}
+Until now, programmers have had little option but to use Javascript, or
+languages that compile down to it like Elm or PureScript when writing modern
+browser web applications applications. Furthermore, With the ever-increasing
+advent of mobile computing devices and hybrid mobile applications, fast
+browser-side code is more topical now than ever. However, the high-level,
+interpreted nature of Javascript makes performance difficult to achieve.
+Besides speed, modern Javascript frameworks and languages that compile down to
+it can also lead to large bloated applications that can take up many megabytes
+of bandwidth, due to Javascript being a text-based format.
+
+Browser vendors like Firefox and Chrome have made countless attempts at
+optimizing the performance of JavaScript Recently, a low-level bytecode format
+for client-side code called WebAssembly has been standardized. WebAssembly
+promises to be faster to both execute and evaluate than ordinary Javascript,
+and also take less space. WebAssembly can also be written in various low-level
+languages like C, C++ or Rust. Besides WebAssembly, other means of writing
+performant client-side code in languages other than JavaScript includes asm.js,
+which is a subset of JS that C/C++ can be compiled down to, utilizing some
+well-supported performance optimizations of JavaScript that might be cumbersome
+to write by hand. The idea behind asm.js is that it’s output can be directly
+converted into native code by browsers and their JavaScript runtimes, without
+going through an expensive interpretation process. We'll also look at doing
+calculations on the GPU with WebGL, since nowadays especially newer mobile
+devices contain quite capable GPUs, which are often quite underutilized in web
+applications. Naturally, GPUs require a totally different mindset when
+designing the actual algorithms since their operation differs fundamentally
+from CPUs, rendering them suboptimal for tasks such as graph traversal or
+sorting, since they cannot be parallelized easily.
+
+Within this paper we benchmark various different algorithms implemented in
+plain JavaScript, the WebGL framework gpu.js, and C/C++ compiled to asm.js and
+WebAssembly.  We then benchmark them on various different device and browser
+combinations. The algorithms we use are  trivial and well understood, such that
+possible subtle differences in implementation won't affect the end result. The
+algorithms used are sorting an array, matrix multiplication and finding the nth
+Fibonacci number. As is apparent, none of these algorithms are themselves
+commonly used in the average web application, but they are used more as a
+proof-of-concept for heavy computing on the browser.
+
+\section{Experiment setup}
+
+As was previously stated, three different classic algorithms were chosen for
+performaning the benchmarks. They were calculating the nth number in the
+Fibonacci sequence, performing multiplication of two square matrices of equal
+sizing, and sorting a list of numbers. The matrix multiplication and list
+sorting were chosen due to the ease-of-scalability, since we could easily
+generate test data for them for arbitrary amounts of size. They also allowed us
+to perform benchmarks on different data types, since, for example,
+theoretically multiplying two 64-bit floating point numbers is much slower than
+doing the same for two 32-bit integers due to the way registers are laid out in
+modern CPUs. We theorized this would give WebAssembly a small benefit against
+asm.js and JavaScript, since both of them are constrained to using 64-bit
+floating point number types for arithmetic calculations, since it is the only
+number type available in JavaScript. The Fibonacci sequence was chosen because
+we wanted to test the possible differences between a recursive and iterative
+version of the algorithm, and we wanted to see how WebAssembly handles
+recursion compared to its alternatives, being a stack-machine based system.
+
+For easily running different benchmarks on combinations of various different
+devices and browsers, we set up an account on the popular browser testing
+service BrowserStack. BrowserStack is originally meant for writing and running
+end-to-end test cases for web applications, but for our purposes it fit our
+needs perfectly. BrowserStack offers a simple API for programmatically
+operating a given browser, and waiting for a certain condition to be fulfilled,
+so the core testing code was only 20 lines of JavaScript or so. The testing
+code can be in listing~\ref{stacktest}. In it, we simply iterate over the
+various browsers, our test cases and their various parameters and launch an
+asynchronous BrowserStack session for each of them. BrowserStack were also
+extremely generous in offering us their paid services for absolutely no cost,
+and we would very much like to extend our thanks for that.
+
+\begin{lstlisting}[caption={BrowserStack testing code},label=stacktest, basicstyle=\scriptsize]
+for (const c of capabilitiesUsed) {
+  for (const p of projects) {
+    for (const params of p.parameters) {
+      for (t of p.testsAvailable) {
+        console.log(
+          `Running test ${p.name} ${t} on browser ${
+            c.browserName
+          } with query parameters ${params}`
+        );
+
+        const url = `${baseUrl}/${p.name}/${t}/?${params}`;
+
+        doRun(url, c);
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+All in all, we chose to test on nine different browsers. For all nine, we used the latest available version.
+
+\begin{itemize}
+  \item Internet Explorer 11
+  \item Safari on macOS
+  \item Opera
+  \item Edge
+  \item Safari on iPhone
+  \item Safari on iPad
+  \item Android default WebView browser
+  \item Firefox
+  \item Chrome
+\end{itemize}
+
+\section{Results}
+\section{Analysis}
+\section{Conclusions}
+
+\bibliographystyle{IEEEtran}
+\bibliography{report}
+
+\end{document}
+
