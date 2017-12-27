@@ -7,7 +7,7 @@
 \usepackage{listings}
 \usepackage{microtype}
 \begin{document}
-\title{Towards a faster web\\high-performance computing on the browser}
+\title{Towards a Faster Web\\High-performance Computing on the Browser}
 
 \author{\IEEEauthorblockN{Matti Jokitulppo}
 \IEEEauthorblockA{Aalto University\\
@@ -18,6 +18,7 @@ Email: matti.jokitulppo@aalto.fi}
 \IEEEauthorblockA{Aalto University\\
 School of Science\\
 Email: olavi.haapala@aalto.fi}
+\and
 \IEEEauthorblockN{Mehrad Mohammadi}
 \IEEEauthorblockA{Aalto University\\
 School of Science\\
@@ -51,15 +52,17 @@ languages like C, C++ or Rust. Besides WebAssembly, other means of writing
 performant client-side code in languages other than JavaScript includes asm.js,
 which is a subset of JS that C/C++ can be compiled down to, utilizing some
 well-supported performance optimizations of JavaScript that might be cumbersome
-to write by hand. The idea behind asm.js is that it’s output can be directly
-converted into native code by browsers and their JavaScript runtimes, without
-going through an expensive interpretation process. We'll also look at doing
-calculations on the GPU with WebGL, since nowadays especially newer mobile
-devices contain quite capable GPUs, which are often quite underutilized in web
-applications. Naturally, GPUs require a totally different mindset when
-designing the actual algorithms since their operation differs fundamentally
-from CPUs, rendering them suboptimal for tasks such as graph traversal or
-sorting, since they cannot be parallelized easily.
+to write by hand. The main idea behind asm.js is that it’s output can be
+directly converted into native code by browsers and their JavaScript runtimes,
+without going through an expensive interpretation process. In real-world usage
+scenarios, asm.js is often used as a fall-back for WebAssembly, if the end-user
+browser does not support it. We willll also look at doing calculations on the
+GPU with WebGL, since nowadays especially newer mobile devices contain quite
+capable GPUs, which are often quite underutilized in web applications.
+Naturally, GPUs require a totally different mindset when designing the actual
+algorithms since their operation differs fundamentally from CPUs, rendering
+them suboptimal for tasks such as graph traversal or sorting, since they cannot
+be parallelized easily.
 
 Within this paper we benchmark various different algorithms implemented in
 plain JavaScript, the WebGL framework gpu.js, and C/C++ compiled to asm.js and
@@ -85,12 +88,68 @@ doing the same for two 32-bit integers due to the way registers are laid out in
 modern CPUs. We theorized this would give WebAssembly a small benefit against
 asm.js and JavaScript, since both of them are constrained to using 64-bit
 floating point number types for arithmetic calculations, since it is the only
-number type available in JavaScript. The Fibonacci sequence was chosen because
-we wanted to test the possible differences between a recursive and iterative
-version of the algorithm, and we wanted to see how WebAssembly handles
-recursion compared to its alternatives, being a stack-machine based system.
+number type available in JavaScript. It is worth mentioning that as specified
+in the EcmaScript standard\cite{EcmaScript} bitwise operators always return a
+32-bit unsigned integer. This is one of the main tricks used by asm.js for
+potentially speeding up computation. The Fibonacci sequence was chosen
+because we wanted to test the possible differences between a recursive and
+iterative version of the algorithm, and we wanted to see how WebAssembly
+handles recursion compared to its alternatives, being a stack-machine based
+system.
 
-For easily running different benchmarks on combinations of various different
+For compiling C++ code to Javascript and WebAssembly, we used the Emscripten
+compiler project. As is stated on their
+website~\footnote{\url{http://kripken.github.io/emscripten-site/}} Emscripten
+is an LLVM-based project that compiles C and C++ into highly-optimizable
+JavaScript in asm.js format. This lets you run C and C++ on the web at
+near-native speed, without plugins.". Setting up the necessary toolchain was
+quite painless, and after installing and setting up the compiler our C++ code
+could be compiled both to WebAssembly and asm.js with one command.
+
+We used the popular version control hosting service GitHub for storing both
+build artifacts and code. GitHub also has basic file-hosting capabilities,
+allowing us to reach and run our benchmarks from the public internet without
+any additional hosting costs. Each of our benchmarks took in its configurations
+such as the requested data type and number of elements as query parameters
+embedded straight into the URL, for ease-of-usage. Finally, we set up a simple
+Node.js API that we used to send our gathered measurements after every run. The
+results where then saved into a MongoDB database, where we could easily analyze
+them. An example of our data schema can be seen in listing~\ref{mongodata}. The
+example shows that on Chrome 62.0.3202 on Mac OS X, sorting an array of 50
+floating point numbers took approximately 0.105 milliseconds.
+
+\begin{lstlisting}[caption={BrowserStack testing code},label=mongodata, basicstyle=\scriptsize]
+
+{
+  "_id" : ObjectId("5a1c3a5bcf7b3443d70c4b34"),
+  "browser" : {
+    "family" : "Chrome",
+    "major" : "62",
+    "minor" : "0",
+    "patch" : "3202"
+  },
+  "device" : {
+    "family" : "Other",
+    "major" : "0",
+    "minor" : "0",
+    "patch" : "0"
+  },
+  "os" : {
+    "family" : "Mac OS X",
+    "major" : "10",
+    "minor" : "13",
+    "patch" : "1"
+  },
+  "type" : "JS",
+  "data" : {
+    "sorting" : 0.10500000000001819,
+    "size" : 50,
+    "type" : "JS"
+  }
+}
+\end{lstlisting}
+
+For running different benchmarks on combinations of various different
 devices and browsers, we set up an account on the popular browser testing
 service BrowserStack. BrowserStack is originally meant for writing and running
 end-to-end test cases for web applications, but for our purposes it fit our
@@ -104,6 +163,7 @@ extremely generous in offering us their paid services for absolutely no cost,
 and we would very much like to extend our thanks for that.
 
 \begin{lstlisting}[caption={BrowserStack testing code},label=stacktest, basicstyle=\scriptsize]
+
 for (const c of capabilitiesUsed) {
   for (const p of projects) {
     for (const params of p.parameters) {
@@ -123,7 +183,8 @@ for (const c of capabilitiesUsed) {
 }
 \end{lstlisting}
 
-All in all, we chose to test on nine different browsers. For all nine, we used the latest available version.
+All in all, we chose to test on nine different browsers. For all nine, we used
+the latest available version on BrowserStack.
 
 \begin{itemize}
   \item Internet Explorer 11
