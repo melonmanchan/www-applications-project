@@ -13,6 +13,8 @@
   stepnumber=1,
   firstnumber=0,
   numberblanklines=false,
+  xleftmargin=2em,
+  framexleftmargin=1.5em
 }
 \begin{document}
 \title{Towards a Faster Web\\High-performance Computing on the Browser}
@@ -100,8 +102,8 @@ compilation, distribution and evaluation of WebAssembly is the module, which
 can be seen on line 1 of the compiled output. As is apparent, WebAssembly
 byte code is a stack-machine based abstract syntax tree of sorts. Of course,
 this format is not meant to be written by hand. The actual function definition
-for our Fibonacci function starts on line 5. As was specified in the C++ code,
-the function takes in a 32-bit integer and returns a 32-bit integer. On line 8,
+for our Fibonacci function starts on line 6. As was specified in the C++ code,
+the function takes in a 32-bit integer and returns a 32-bit integer. On line 9,
 we perform the \emph{i.32.ge\_s} instruction to check if the variable on the
 call stack, which is the integer \emph{n} in the C++ code, is less than or
 equal to one. In the WebAssembly code, the parameter \emph{n} is located at the
@@ -231,8 +233,9 @@ could be compiled both to WebAssembly and asm.js with one command.
 Unfortunately, after compiling the actual documentation on how to load, call
 and use functions using WebAssembly was somewhat lacking.
 
+
 We used the popular version control hosting service GitHub for storing both
-build artifacts and code. GitHub also has basic file-hosting capabilities,
+build artifacts and code~footnote{\url{https://github.com/melonmanchan/www-applications-project}}. GitHub also has basic file-hosting capabilities,
 allowing us to reach and run our benchmarks from the public internet without
 any additional hosting costs. Each of our benchmarks took in its configurations
 such as the requested data type and number of elements as query parameters
@@ -330,18 +333,48 @@ the latest available version on BrowserStack.
 \end{itemize}
 
 \section{Results}
+
+Looking at the final results, our initial expectations were proven to be
+correct. Across all supported browsers WebAssembly was the fastest, with asm.js
+not too far behind. Native JavaScript and gpu.js were the slowest, as is to be
+expected. For sorting and matrix multiplication, for asm.js and JavaScript it
+made no difference if the data type being operated on was a float or double.
+However, for WebAssembly operations were clearly faster on 32-bit integer data
+types than for the other data types. For example, on Chrome sorting a list of
+10000 random items took 10 milliseconds on average, 12 milliseconds for 32-bit
+floats and 17 milliseconds for 64-bit doubles.
+
+Across all platforms, WebAssembly was the fastest on Chrome and Firefox, and
+slowest on Edge and Android WebView. For the sake of comparison, sorting 100
+numbers took about 10 milliseconds on WebAssembly for floats on an Android
+device using it's own WebView, while it only took about 0.5 milliseconds on
+Desktop Chrome.
+
+Asm.js was quite a lot faster on Firefox than other browsers. For example, for
+multiplying two 1000 by 1000 matrices of random floating point numbers, it took
+about 5290 milliseconds on Firefox for asm.js, while it took around 14520
+milliseconds on Chrome, almost three times longer.
+
+For matrix multiplication, gpu.js seems quite slow. For example, for the aforementioned a square
+matrix of size 1000 \times 1000 gpu.js with another, on Chrome it took 43130
+milliseconds for gpu.js, but just 14960 milliseconds for plain JavaScript. For
+contrast, WebAssembly took just 2680 milliseconds, and asm.js took 14520
+milliseconds.
+
 \section{Analysis \& Conclusions}
-For all the browsers measured, WebAssembly was indeed by far the fastest method
-for all three benchmarks on all browsers. However, for the sake of fairness for
-WebAssembly and asm.js we included not only the actual time spent on
-computations, but also the time spent on passing data and dynamically managing
-memory. This overhead made WASM and asm.js somewhat slower than native
-JavaScript on very trivial amounts of data.
+As specified in the previous chapter, for all intents and purposes,
+WebAssembly was indeed by far the fastest method for all three benchmarks on
+all browsers. However, for the sake of fairness for WebAssembly and asm.js we
+included not only the actual time spent on computations, but also the time
+spent on passing data and dynamically managing memory. This overhead made WASM
+and asm.js somewhat slower than native JavaScript on very trivial amounts of
+data.
 
 Asm.js came in second when it came to pure speed. On some browsers, mostly
 Firefox, almost beating WebAssembly in some use-cases. It makes that asm.js
 would be the fastest of Firefox, both technologies being made by the Mozilla
-corporation. In some ways it feels like asm.js is already somewhat outdated
+corporation. Firefox most likely has some asm.js specific optimizations in
+place. In some ways it feels like asm.js is already somewhat outdated
 technology currently. We see no reason one should use it if WebAssembly is a
 viable option. Asm.js can still be used as a fallback for older browsers,
 however, so it retains it's usefulness to that extent.
@@ -357,6 +390,14 @@ on it, and then it must be converted back before it can be used on the web
 application side. The debugging tools were also very lackluster for gpu.js, and
 we would not consider it production-ready in its current state. It was an
 interesting experience none the less.
+
+For us, using BrowserStack for automated testing was a good idea and a learning
+experience, but debugging potential failures was somewhat difficult. For some
+devices and test runs, it would occasionally crash without giving a clear
+explanation as to why. If more accurate results were to be gathered, we would
+suggest running thousands of tests more on real-world devices by hand, instead
+of attempting to automate it. However, we would still recommend BrowserStack
+for end-to-end testing of web applications, which is it's main purpose.
 
 WebAssembly has recently gained support in all the latest
 browsers~\footnote{\url{https://blog.mozilla.org/blog/2017/11/13/webassembly-in-browsers/}},
