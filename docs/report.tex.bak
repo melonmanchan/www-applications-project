@@ -52,7 +52,7 @@ it can also lead to large bloated applications that can take up many megabytes
 of bandwidth, due to JavaScript being a text-based format.
 
 Browser vendors like Firefox and Chrome have made countless attempts at
-optimizing the performance of JavaScript. Recently, a low-level byte code format
+optimizing the performance of JavaScript. Recently, a low-level bytecode format
 for client-side code called WebAssembly~\cite{wasmspeed} has been standardized. WebAssembly
 promises to be faster to both execute and evaluate than ordinary JavaScript,
 and also take less space. WebAssembly can also be written in various low-level
@@ -61,7 +61,7 @@ performant client-side code in languages other than JavaScript includes asm.js,
 which is a subset of JS that C/C++ can be compiled down to, utilizing some
 well-supported performance optimizations of JavaScript that might be cumbersome
 to write by hand. The main idea behind asm.js is that it’s output can be
-directly converted into native code by browsers and their JavaScript run times,
+directly converted into native code by browsers and their JavaScript runtimes,
 without going through an expensive interpretation process. In real-world usage
 scenarios, asm.js is often used as a fall-back for WebAssembly, if the end-user
 browser does not support it. We will also look at doing calculations on the
@@ -69,7 +69,7 @@ GPU with WebGL, since nowadays especially newer mobile devices contain quite
 capable GPUs, which are often quite underutilized in web applications.
 Naturally, GPUs require a totally different mindset when designing the actual
 algorithms since their operation differs fundamentally from CPUs, rendering
-them sub-optimal for tasks such as graph traversal or sorting, since they cannot
+them suboptimal for tasks such as graph traversal or sorting, since they cannot
 be parallelized easily.
 
 Within this paper we benchmark various different algorithms implemented in
@@ -84,26 +84,26 @@ proof-of-concept for heavy computing on the browser.
 
 As an example, the classic recursive algorithm for finding the nth Fibonacci
 number, written in C++, can be seen in listing~\ref{cfibo}, The corresponding
-WebAssembly byte code and asm.js output, both reassembled into a human-readable
+WebAssembly bytecode and asm.js output, both reassembled into a human-readable
 format can be seen in listing~\ref{wasmfibo}. The main unit of both
 compilation, distribution and evaluation of WebAssembly is the module, which
 can be seen on line 1 of the compiled output. As is apparent, WebAssembly
-byte code is a stack-machine based abstract syntax tree of sorts. Of course,
+bytecode is a stack-machine based abstract syntax tree of sorts. Of course,
 this format is not meant to be written by hand. The actual function definition
-for our Fibonacci function starts on line 5. As was specified in the C++ code,
+for our fibonacci function starts on line 5. As was specified in the C++ code,
 the function takes in a 32-bit integer and returns a 32-bit integer. On line 8,
 we perform the \emph{i.32.ge\_s} instruction to check if the variable on the
 call stack, which is the integer \emph{n} in the C++ code, is less than or
 equal to one. In the WebAssembly code, the parameter \emph{n} is located at the
 top of the stack. If \emph{n} is less than two, we simply get the local
 variable from the stack at point \emph{\$0} and return it. Otherwise, we call
-the \emph{i32.add} function on the the output of two additional calls to our
-Fibonacci function.
+the \emph{i32.add} function on the the output of two additionals calls to our
+fibonacci function.
 
 The asm.js compiled output is actually extremely similar to what one would
 write in regular, everyday JavaScript. The only two performance optimizations
 made by the compiler in this particular piece of code is the casting of all the
-variables into 32-bit unsigned integers by performing the bit wise OR operation
+variables into 32-bit unsigned integers by performing the bitwise OR operation
 on them with 0, and using addition also when decrementing numbers from each
 other.
 
@@ -190,7 +190,7 @@ pointers.
 \section{Experiment setup}
 
 As was previously stated, three different classic algorithms were chosen for
-performing the benchmarks. They were calculating the nth number in the
+performaning the benchmarks. They were calculating the nth number in the
 Fibonacci sequence, performing multiplication of two square matrices of equal
 sizing, and sorting a list of numbers. The matrix multiplication and list
 sorting were chosen due to the ease-of-scalability, since we could easily
@@ -202,7 +202,7 @@ modern CPUs. We theorized this would give WebAssembly a small benefit against
 asm.js and JavaScript, since both of them are constrained to using 64-bit
 floating point number types for arithmetic calculations, since it is the only
 number type available in JavaScript. It is worth mentioning that as specified
-in the EcmaScript standard\cite{EcmaScript} bit wise operators always return a
+in the EcmaScript standard\cite{EcmaScript} bitwise operators always return a
 32-bit unsigned integer. This is one of the main tricks used by asm.js for
 potentially speeding up computation. The Fibonacci sequence was chosen
 because we wanted to test the possible differences between a recursive and
@@ -213,9 +213,9 @@ system.
 For compiling C++ code to JavaScript and WebAssembly, we used the Emscripten
 compiler project. As is stated on their
 website~\footnote{\url{http://kripken.github.io/emscripten-site/}} Emscripten
-is an LLVM-based project that compiles C and C++ into highly-optimized
+is an LLVM-based project that compiles C and C++ into highly-optimizable
 JavaScript in asm.js format. This lets you run C and C++ on the web at
-near-native speed, without plugins.". Setting up the necessary tool chain was
+near-native speed, without plugins.". Setting up the necessary toolchain was
 quite painless, and after installing and setting up the compiler our C++ code
 could be compiled both to WebAssembly and asm.js with one command.
 Unfortunately, after compiling the actual documentation on how to load, call
@@ -329,7 +329,7 @@ memory. This overhead made WASM and asm.js somewhat slower than native
 JavaScript on very trivial amounts of data.
 
 Asm.js came in second when it came to pure speed. On some browsers, mostly
-Firefox, almost beating WebAssembly in some use-cases. It makes that asm.js
+FireFox, almost beating WebAssembly in some use-cases. It makes that asm.js
 would be the fastest of Firefox, both technologies being made by the Mozilla
 corporation. In some ways it feels like asm.js is already somewhat outdated
 technology currently. We see no reason one should use it if WebAssembly is a

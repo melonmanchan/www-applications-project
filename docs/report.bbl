@@ -21,6 +21,16 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{wasmspeed}
+\BIBentryALTinterwordspacing
+A.~Haas, A.~Rossberg, D.~L. Schuff, B.~L. Titzer, M.~Holman, D.~Gohman,
+  L.~Wagner, A.~Zakai, and J.~Bastien, ``Bringing the web up to speed with
+  webassembly,'' in \emph{Proceedings of the 38th ACM SIGPLAN Conference on
+  Programming Language Design and Implementation}, ser. PLDI 2017.\hskip 1em
+  plus 0.5em minus 0.4em\relax New York, NY, USA: ACM, 2017, pp. 185--200.
+  [Online]. Available: \url{http://doi.acm.org/10.1145/3062341.3062363}
+\BIBentrySTDinterwordspacing
+
 \bibitem{EcmaScript}
 \BIBentryALTinterwordspacing
 {ECMA International}, \emph{Standard ECMA-262 - ECMAScript Language
