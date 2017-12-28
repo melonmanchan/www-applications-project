@@ -32,12 +32,22 @@ Email: olavi.haapala@aalto.fi}
 School of Science\\
 Email: mehrad.mohammadi@aalto.fi}
 }
-
 % make the title area
 \maketitle
 
 \begin{abstract}
-The abstract goes here.
+Recently, a new standard for a fast, space-efficient bytecode format for the
+  browser by the name of WebAssembly has been standardized,  and implemented by
+  all the most prominent browser vendors. WebAssembly enables languages like C,
+  C++ or Rust can be compiled to WebAssembly using existing tools, such as the LLVM-based Emscripten compiler.
+
+  In this paper we attempt to benchmark WebAssembly against native JavaScript
+  for various simple computational tasks. Initial results show that WebAssembly
+  is very promising in terms of pure speed and efficiency. However, the
+  developer tool chain and programming language integration still needs work.
+  However, we believe WebAssembly and other intermediary tools like Babel are
+  the future, and writing plain JavaScript for web applications will become
+  more and more rare.
 \end{abstract}
 
 \section{Introduction}
@@ -360,7 +370,13 @@ number of other languages without the inevitable legacy baggage that comes with
 JavaScript, since the EcmaScript standard has to stay backwards compliant for
 the unforeseeable future. Currently, the biggest hurdle for WebAssembly is the
 lack of DOM operations and the lack of a standardized garbage collector, but
-those are currently being worked on.
+those are currently being worked on. All in all, we believe that in the coming
+years writing "plain" JavaScript will become more and more rare, as
+intermediate formats and compilers like WebAssembly and
+Babel~\footnote{\url{https://babeljs.io/}} become more and more widespread. Of
+course, JavaScript itself is not going anywhere soon, but it is our belief that
+it and its interpreters will become more of a virtual machine for running code
+on the browser, than a programming language unto itself.
 
 \bibliographystyle{IEEEtran}
 \bibliography{report}
