@@ -22,26 +22,27 @@
 \author{\IEEEauthorblockN{Matti Jokitulppo}
 \IEEEauthorblockA{Aalto University\\
 School of Science\\
-Email: matti.jokitulppo@aalto.fi}
+matti.jokitulppo@aalto.fi}
 \and
 \IEEEauthorblockN{Olavi Haapala}
 \IEEEauthorblockA{Aalto University\\
 School of Science\\
-Email: olavi.haapala@aalto.fi}
+olavi.haapala@aalto.fi}
 \and
 \IEEEauthorblockN{Mehrad Mohammadi}
 \IEEEauthorblockA{Aalto University\\
 School of Science\\
-Email: mehrad.mohammadi@aalto.fi}
+mehrad.mohammadi@aalto.fi}
 }
 % make the title area
 \maketitle
 
 \begin{abstract}
 Recently, a new standard for a fast, space-efficient bytecode format for the
-  browser by the name of WebAssembly has been standardized,  and implemented by
+  browser by the name of WebAssembly has been standardized and implemented by
   all the most prominent browser vendors. WebAssembly enables languages like C,
-  C++ or Rust can be compiled to WebAssembly using existing tools, such as the LLVM-based Emscripten compiler.
+  C++ or Rust can be compiled to WebAssembly using existing tools, such as the
+  LLVM-based Emscripten compiler.
 
   In this paper we attempt to benchmark WebAssembly against native JavaScript
   for various simple computational tasks. Initial results show that WebAssembly
@@ -55,15 +56,15 @@ Recently, a new standard for a fast, space-efficient bytecode format for the
 \section{Introduction}
 Until now, programmers have had little option but to use JavaScript, or
 languages that compile down to it like Elm or PureScript when writing modern
-browser web applications applications. Furthermore, With the ever-increasing
-advent of mobile computing devices and hybrid mobile applications, fast
-browser-side code is more topical now than ever. However, the high-level,
-interpreted nature of JavaScript makes performance difficult to achieve.
-Besides speed, modern JavaScript frameworks and languages that compile down to
-it can also lead to large bloated applications that can take up many megabytes
-of bandwidth, due to JavaScript being a text-based format.
+browser web applications. Furthermore, with the ever-increasing advent of mobile
+computing devices and hybrid mobile applications, fast browser-side code is
+more topical now than ever. However, the high-level, interpreted nature of
+JavaScript makes high performance difficult to achieve. Besides speed, modern
+JavaScript frameworks and languages that compile down to it can also lead to
+large bloated applications that can take up several megabytes of bandwidth, due
+to JavaScript being a text-based format.
 
-Browser vendors like Firefox and Chrome have made countless attempts at
+Browser vendors like Firefox and Chrome have made countless attempts in
 optimizing the performance of JavaScript. Recently, a low-level byte code format
 for client-side code called WebAssembly~\cite{wasmspeed} has been standardized. WebAssembly
 promises to be faster to both execute and evaluate than ordinary JavaScript,
@@ -72,7 +73,7 @@ languages like C, C++ or Rust. Besides WebAssembly, other means of writing
 performant client-side code in languages other than JavaScript includes asm.js,
 which is a subset of JS that C/C++ can be compiled down to, utilizing some
 well-supported performance optimizations of JavaScript that might be cumbersome
-to write by hand. The main idea behind asm.js is that it’s output can be
+to write by hand. The main idea behind asm.js is that its output can be
 directly converted into native code by browsers and their JavaScript run times,
 without going through an expensive interpretation process. In real-world usage
 scenarios, asm.js is often used as a fall-back for WebAssembly, if the end-user
@@ -86,11 +87,11 @@ be parallelized easily.
 
 Within this paper we benchmark various different algorithms implemented in
 plain JavaScript, the WebGL framework gpu.js, and C/C++ compiled to asm.js and
-WebAssembly.  We then benchmark them on various different device and browser
-combinations. The algorithms we use are  trivial and well understood, such that
-possible subtle differences in implementation won't affect the end result. The
-algorithms used are sorting an array, matrix multiplication and finding the nth
-Fibonacci number. As is apparent, none of these algorithms are themselves
+WebAssembly. We then benchmark them on various different device and browser
+combinations. The algorithms we use are trivial and well understood, such that
+possible subtle differences in implementation will not affect the end result.
+The algorithms used are sorting an array, matrix multiplication and finding the
+nth Fibonacci number. Obviously, none of these algorithms are themselves
 commonly used in the average web application, but they are used more as a
 proof-of-concept for heavy computing on the browser.
 
@@ -102,7 +103,7 @@ compilation, distribution and evaluation of WebAssembly is the module, which
 can be seen on line 1 of the compiled output. As is apparent, WebAssembly
 byte code is a stack-machine based abstract syntax tree of sorts. Of course,
 this format is not meant to be written by hand. The actual function definition
-for our Fibonacci function starts on line 6. As was specified in the C++ code,
+for our Fibonacci function starts on line 6. As specified in the C++ code,
 the function takes in a 32-bit integer and returns a 32-bit integer. On line 9,
 we perform the \emph{i.32.ge\_s} instruction to check if the variable on the
 call stack, which is the integer \emph{n} in the C++ code, is less than or
@@ -188,11 +189,11 @@ other.
 \end{minipage}
 \end{figure*}
 
-From the point of view of the programmer, using both the WebAssembly and the
+From the programmers point of view, using both the WebAssembly and the
 asm.js code is quite similar. One simply loads the build artifacts from the
 compiler using a regular HTML5-compliant script tag, which sets a global
 \emph{Module} object which can be used to call functions defined in WASM/asm.js
-from regular JavaScript. One important distinction is that neither WASM nor
+from regular JavaScript. An important distinction is that neither WASM nor
 asm.js handle dynamic memory, both being stack allocated. All memory has to be
 allocated beforehand on the JavaScript side as Uint8Arrays of the needed size,
 which then needs to be passed in as a pointer to the WASM/asm.js module. This
@@ -201,7 +202,7 @@ pointers.
 
 \section{Experiment setup}
 
-As was previously stated, three different classic algorithms were chosen for
+As previously stated, three different classic algorithms were chosen for
 performing the benchmarks. They were calculating the nth number in the
 Fibonacci sequence, performing multiplication of two square matrices of equal
 sizing, and sorting a list of numbers. The matrix multiplication and list
@@ -223,7 +224,7 @@ handles recursion compared to its alternatives, being a stack-machine based
 system.
 
 For compiling C++ code to JavaScript and WebAssembly, we used the Emscripten
-compiler project. As is stated on their
+compiler project. As stated on their
 website~\footnote{\url{http://kripken.github.io/emscripten-site/}} Emscripten
 is an LLVM-based project that compiles C and C++ into highly-optimized
 JavaScript in asm.js format. This lets you run C and C++ on the web at
@@ -241,7 +242,7 @@ any additional hosting costs. Each of our benchmarks took in its configurations
 such as the requested data type and number of elements as query parameters
 embedded straight into the URL, for ease-of-usage. Finally, we set up a simple
 Node.js API that we used to send our gathered measurements after every run. The
-results where then saved into a MongoDB database, where we could easily analyze
+results were then saved into a MongoDB database, where we could easily analyze
 them. An example of our data schema can be seen in listing~\ref{mongodata}. The
 example shows that on Chrome 62.0.3202 on Mac OS X, sorting an array of 50
 floating point numbers took approximately 0.105 milliseconds. A screenshot of
@@ -290,9 +291,9 @@ end-to-end test cases for web applications, but for our purposes it fit our
 needs perfectly. BrowserStack offers a simple API for programmatically
 operating a given browser, and waiting for a certain condition to be fulfilled,
 so the core testing code was only 20 lines of JavaScript or so. The testing
-code can be in listing~\ref{stacktest}. In it, we simply iterate over the
+code can be seen in listing~\ref{stacktest}. In it, we simply iterate over the
 various browsers, our test cases and their various parameters and launch an
-asynchronous BrowserStack session for each of them. BrowserStack were also
+asynchronous BrowserStack session for each of them. BrowserStack was also
 extremely generous in offering us their paid services for absolutely no cost,
 and we would very much like to extend our thanks for that.
 
@@ -336,9 +337,9 @@ the latest available version on BrowserStack.
 
 Looking at the final results, our initial expectations were proven to be
 correct. Across all supported browsers WebAssembly was the fastest, with asm.js
-not too far behind. Native JavaScript and gpu.js were the slowest, as is to be
-expected. For sorting and matrix multiplication, for asm.js and JavaScript it
-made no difference if the data type being operated on was a float or double.
+not too far behind. Native JavaScript and gpu.js were the slowest, as expected.
+For sorting and matrix multiplication, for asm.js and JavaScript it
+made no difference if the data type being operated on was float or double.
 However, for WebAssembly operations were clearly faster on 32-bit integer data
 types than for the other data types. For example, on Chrome sorting a list of
 10000 random items took 10 milliseconds on average, 12 milliseconds for 32-bit
@@ -350,15 +351,15 @@ numbers took about 10 milliseconds on WebAssembly for floats on an Android
 device using it's own WebView, while it only took about 0.5 milliseconds on
 Desktop Chrome.
 
-Asm.js was quite a lot faster on Firefox than other browsers. For example, for
-multiplying two 1000 by 1000 matrices of random floating point numbers, it took
+Asm.js was remarkably faster on Firefox than on other browsers. For example,
+multiplying two 1000 by 1000 matrices of random floating point numbers, took
 about 5290 milliseconds on Firefox for asm.js, while it took around 14520
 milliseconds on Chrome, almost three times longer.
 
-For matrix multiplication, gpu.js seems quite slow. For example, for the aforementioned a square
+For matrix multiplication, gpu.js seems quite slow. For example, for the aforementioned square
 matrix of size 1000 \times 1000 gpu.js with another, on Chrome it took 43130
 milliseconds for gpu.js, but just 14960 milliseconds for plain JavaScript. For
-contrast, WebAssembly took just 2680 milliseconds, and asm.js took 14520
+contrast, WebAssembly took only 2680 milliseconds, and asm.js took 14520
 milliseconds.
 
 \section{Analysis \& Conclusions}
@@ -370,20 +371,20 @@ spent on passing data and dynamically managing memory. This overhead made WASM
 and asm.js somewhat slower than native JavaScript on very trivial amounts of
 data.
 
-Asm.js came in second when it came to pure speed. On some browsers, mostly
-Firefox, almost beating WebAssembly in some use-cases. It makes that asm.js
+Asm.js comes in second when it cames to pure speed. On some browsers, mostly
+Firefox, almost beating WebAssembly in some use-cases. It seems like asm.js
 would be the fastest of Firefox, both technologies being made by the Mozilla
 corporation. Firefox most likely has some asm.js specific optimizations in
 place. In some ways it feels like asm.js is already somewhat outdated
-technology currently. We see no reason one should use it if WebAssembly is a
-viable option. Asm.js can still be used as a fallback for older browsers,
-however, so it retains it's usefulness to that extent.
+technology currently. We see no reason for using it if WebAssembly is a
+viable option. However, asm.js can still be used as a fallback for older
+browsers and retains its usefulness to that extent.
 
 Using gpu.js to offload the easily parallelized matrix multiplication to the
-GPU instead of the CPU was an interesting experiment. However, as is to be
-expected there was a large overhead in moving data from the CPU to the GPU
-pipeline, and then back again. To make matters worse, WebGL has no easy way of
-passing simple numerical data back and forth like with regular OpenGL and the
+GPU instead of the CPU was an interesting experiment. However, as expected
+there was a large overhead in moving data from the CPU to the GPU
+pipeline, and back again. To make matters worse, WebGL has no easy way of
+passing simple numerical data back and forth like regular OpenGL and the
 CUDA toolkit. Instead, numerical data has to be first converted into a 2D
 texture which must be loaded into WebGL before any operations can be performed
 on it, and then it must be converted back before it can be used on the web
@@ -397,7 +398,7 @@ devices and test runs, it would occasionally crash without giving a clear
 explanation as to why. If more accurate results were to be gathered, we would
 suggest running thousands of tests more on real-world devices by hand, instead
 of attempting to automate it. However, we would still recommend BrowserStack
-for end-to-end testing of web applications, which is it's main purpose.
+for end-to-end testing of web applications, which is its main purpose.
 
 WebAssembly has recently gained support in all the latest
 browsers~\footnote{\url{https://blog.mozilla.org/blog/2017/11/13/webassembly-in-browsers/}},
@@ -406,7 +407,7 @@ it matures. During our tests, we ran into some issues of lackluster
 documentation, but that will not be an issue once adaption rate increases.
 Besides the performance implications, we feel that the breakthrough factor that
 will make WebAssembly succeed in the long run is the fact that one no longer
-has to write their web applications in JavaScript, but can choose from any
+has to write web applications in JavaScript, but can choose from a
 number of other languages without the inevitable legacy baggage that comes with
 JavaScript, since the EcmaScript standard has to stay backwards compliant for
 the unforeseeable future. Currently, the biggest hurdle for WebAssembly is the
@@ -417,7 +418,7 @@ intermediate formats and compilers like WebAssembly and
 Babel~\footnote{\url{https://babeljs.io/}} become more and more widespread. Of
 course, JavaScript itself is not going anywhere soon, but it is our belief that
 it and its interpreters will become more of a virtual machine for running code
-on the browser, than a programming language unto itself.
+on the browser than a programming language itself.
 
 \bibliographystyle{IEEEtran}
 \bibliography{report}
